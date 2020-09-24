@@ -16,7 +16,7 @@ Including another URLconf
 
 # from django.conf.urls import url
 from django.urls import path
-from APIApp import views
+from APIApplication import views
 
 urlpatterns = [
     path('coinList/', views.ListCoins),
