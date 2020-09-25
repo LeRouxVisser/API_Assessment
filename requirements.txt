@@ -7,4 +7,3 @@ idna==2.10
 pytz==2020.1
 requests==2.24.0
 sqlparse==0.3.1
-
