@@ -43,6 +43,8 @@ def MarketCap(request):
         else:
             days = date_diff + 1
         url = f'https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart?vs_currency={currency}&days={days}'
+        key = "error"
+        market_cap = f'Coin id and currency combination does not have a market value for {date} date as of yet.'
 
         try:
             clear_all = True
@@ -50,6 +52,7 @@ def MarketCap(request):
             clear_all = False
             market_cap = float(
                 MCap.objects.filter(Date_captured=date_now, Input_date=date, coin_id=coin_id, currency=currency)[0])
+            key = currency
         except IndexError:
             if clear_all == True:
                 MCap.objects.all().delete()
@@ -58,15 +61,17 @@ def MarketCap(request):
                 for i in range(len(market_caps) - 1):
                     if date == datetime.fromtimestamp(market_caps[i][0] / 1000).date():
                         market_cap = market_caps[i][1]
-                list_mcap_obj = MCap(Date_captured=date_now, Input_date=date, coin_id=coin_id, currency=currency,
-                                     Market_cap=market_cap)
-                list_mcap_obj.save()
+                        list_mcap_obj = MCap(Date_captured=date_now, Input_date=date, coin_id=coin_id, currency=currency,
+                                             Market_cap=market_cap)
+                        list_mcap_obj.save()
+                        key = currency
+
             except KeyError:
                 return JsonResponse(requests.get(url).json(), safe=False)
     except ValueError:
         return JsonResponse({'error':'Invalid date please use yyyy/mm/dd format'}, safe=False)
 
     dict_response = {}
-    dict_response[currency] = market_cap
+    dict_response[key] = market_cap
     return JsonResponse(dict_response, safe=False)
 
