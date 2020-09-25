@@ -16,7 +16,6 @@ def ListCoins(request):
     try:
         all_events = str(CoinList.objects.filter(Date=date_now)[0])
     except IndexError:
-        print('Hello')
         CoinList.objects.all().delete()
         all_events = requests.get(url).text
         list_coin_obj = CoinList(Date=date_now, jason_str=all_events)
