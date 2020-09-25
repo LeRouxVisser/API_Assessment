@@ -44,7 +44,7 @@ def MarketCap(request):
             days = date_diff + 1
         url = f'https://api.coingecko.com/api/v3/coins/{coin_id}/market_chart?vs_currency={currency}&days={days}'
         key = "error"
-        market_cap = f'Coin id and currency combination does not have a market value for {date} date as of yet.'
+        market_cap = f'Coin id and currency combination does not have a market cap value for {date} date as of yet.'
 
         try:
             clear_all = True
