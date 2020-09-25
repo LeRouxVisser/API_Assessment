@@ -14,6 +14,8 @@ def ListCoins(request):
     url = "https://api.coingecko.com/api/v3/coins/list"
     date_now = datetime.now().date()
     try:
+        # First check if data was already pulled Today, if not request data for Today
+        # and store it in the database.
         all_events = CoinList.objects.get(date=date_now).json_str
     except CoinList.DoesNotExist:
         CoinList.objects.all().delete()
@@ -62,13 +64,11 @@ def MarketCap(request):
                                      market_cap=market_cap)
                 list_mcap_obj.save()
                 key = currency
-
             except KeyError:
                 dict_response[key] = market_cap
                 return JsonResponse(dict_response, safe=False, status=404)
     except ValueError:
         return JsonResponse({'error':'Invalid date please use yyyy/mm/dd format'}, safe=False, status=400)
-
     dict_response[key] = market_cap
     return JsonResponse(dict_response, safe=False)
 
