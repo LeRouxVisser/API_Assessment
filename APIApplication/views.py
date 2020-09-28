@@ -27,11 +27,9 @@ def ListCoins(request):
 @api_view(["GET"])
 def MarketCap(request):
     """
-    Used the /market_chart endpoint on https://www.coingecko.com/en/api/v3 url to calculate and
-    retrieve the market cap for the wanted coin id and currency pair for the given date.
-    Made sure that I always get a given days market cap by passing 91 days as a parameter even if the
-    date passed is not 91 days ago, if however it is more than 91 days ago I will pass the number of
-    days in the past we would like data for.
+    Used the /coins/{coin_id}/history endpoint on https://www.coingecko.com/en/api/v3 url to 
+    retrieve the market cap for the wanted coin id and currency pair for the given date. This was 
+    done by retrieving the values from a nested dictionary.
     """
     coin_id = request.GET.get('coin_id','')
     currency = request.GET.get('currency', '')
